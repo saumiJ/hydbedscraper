@@ -1,7 +1,10 @@
+import logging
+
 from hydbedscraper.types import t_BeautifulSoup, t_SummaryDict, t_FullDict
 
 
 def parse_summary(summary_soup: t_BeautifulSoup) -> t_SummaryDict:
+    logging.info("parsing summary page..")
     summary_dict: t_SummaryDict = dict()
 
     # column-ids
@@ -38,10 +41,12 @@ def parse_summary(summary_soup: t_BeautifulSoup) -> t_SummaryDict:
                     row_cols[col_id_of_bed_type + status_offset].string
                 )
 
+    logging.info("..done")
     return summary_dict
 
 
 def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
+    logging.info("parsing government hospitals page..")
     col_id_of_district = 1
     key_colid_dtype = [
         ("hospital_name", 2, str),
@@ -77,8 +82,12 @@ def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
         for k, kid, dtype in key_colid_dtype:
             govt_dict[k].append(dtype(cells[kid + offset].string.strip()))
 
+    logging.info("..done")
     return govt_dict
 
 
 def parse_private_hospitals(private_soup: t_BeautifulSoup) -> t_FullDict:
-    return parse_government_hospitals(private_soup)
+    logging.info("parsing private hospitals page..")
+    private_dict = parse_government_hospitals(private_soup)
+    logging.info("..done")
+    return private_dict
