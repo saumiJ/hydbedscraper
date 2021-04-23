@@ -3,3 +3,14 @@ venv/
 
 # pycharm files
 .idea/
+
+# pycache
+__pycache__/
+
+
+# egg
+*.egg-info/
+
+
+# output
+summary.json
