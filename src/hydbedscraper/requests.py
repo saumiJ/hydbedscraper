@@ -3,7 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
-from hydbedscraper.testdata.path import test_summary_html, test_government_hospital_data_html, test_private_hospital_data_html
+from hydbedscraper.testdata.path import (
+    test_summary_html,
+    test_government_hospital_data_html,
+    test_private_hospital_data_html,
+)
 from hydbedscraper.types import t_BeautifulSoup, t_Response
 
 base_URL = "http://164.100.112.24/SpringMVC/"
