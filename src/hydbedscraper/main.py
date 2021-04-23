@@ -18,7 +18,7 @@ from hydbedscraper.requests import (
 logging.getLogger().setLevel(logging.INFO)
 
 
-def main():
+def work():
     # TODO: performance optimization
     # TODO: tests
     summary_soup = get_summary_page_soup(use_test=False)
@@ -40,4 +40,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    work()
