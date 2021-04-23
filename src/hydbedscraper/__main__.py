@@ -12,7 +12,9 @@ def get_base_page_soup(use_test: bool = True) -> t_BeautifulSoup:
         with open(test_summary_html) as fp:
             soup = BeautifulSoup(fp, "lxml")
     else:
-        page = requests.get("http://164.100.112.24/SpringMVC/Hospital_Beds_Statistic_Bulletin_citizen.htm")
+        page = requests.get(
+            "http://164.100.112.24/SpringMVC/Hospital_Beds_Statistic_Bulletin_citizen.htm"
+        )
         soup = BeautifulSoup(page.content, "lxml")
     return soup
 
