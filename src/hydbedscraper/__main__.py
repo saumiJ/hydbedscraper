@@ -1,69 +1,42 @@
 import json
-import requests
+import logging
+import pandas
 
-from bs4 import BeautifulSoup
-
-from hydbedscraper.type import t_BeautifulSoup, t_SummaryDict
-from hydbedscraper.testdata.path import test_summary_html
-
-
-def get_base_page_soup(use_test: bool = True) -> t_BeautifulSoup:
-    if use_test:
-        with open(test_summary_html) as fp:
-            soup = BeautifulSoup(fp, "lxml")
-    else:
-        page = requests.get(
-            "http://164.100.112.24/SpringMVC/Hospital_Beds_Statistic_Bulletin_citizen.htm"
-        )
-        soup = BeautifulSoup(page.content, "lxml")
-    return soup
+from hydbedscraper.parsers import (
+    parse_summary,
+    parse_government_hospitals,
+    parse_private_hospitals,
+)
+from hydbedscraper.requests import (
+    get_summary_page_soup,
+    get_government_hospitals_page_soup,
+    get_private_hospitals_page_soup,
+)
 
 
-def extract_summary(soup: t_BeautifulSoup) -> t_SummaryDict:
-    summary_dict: t_SummaryDict = dict()
-
-    # column-ids
-    col_id_of_hospital_type = 1
-    col_id_of_regular_beds = 2
-    col_id_of_oxygen_beds = 5
-    col_id_of_icu_beds = 8
-
-    # offsets
-    occupied_offset = 1
-    vacant_offset = 2
-
-    # get first instance of table
-    summary_table = soup.find("table")
-
-    # populate info
-    body = summary_table.find("tbody")
-    body_rows = body("tr")
-    for bed_type, col_id_of_bed_type in [
-        ("regular_bed", col_id_of_regular_beds),
-        ("oxygen_bed", col_id_of_oxygen_beds),
-        ("icu_bed", col_id_of_icu_beds),
-    ]:
-        summary_dict[bed_type] = dict()
-        for status, status_offset in [
-            ("occupied", occupied_offset),
-            ("vacant", vacant_offset),
-        ]:
-            summary_dict[bed_type][status] = dict()
-            for row in body_rows:
-                row_cols = row("td")
-                hospital_type = row_cols[col_id_of_hospital_type].a.string
-                summary_dict[bed_type][status][hospital_type] = int(
-                    row_cols[col_id_of_bed_type + status_offset].string
-                )
-
-    return summary_dict
+# TODO: setup proper logging
+logging.getLogger().setLevel(logging.INFO)
 
 
 def main():
-    base_soup = get_base_page_soup(use_test=False)
-    summary = extract_summary(base_soup)
+    # TODO: performance optimization
+    # TODO: tests
+    summary_soup = get_summary_page_soup(use_test=False)
+    govt_soup = get_government_hospitals_page_soup(use_test=False)
+    private_soup = get_private_hospitals_page_soup(use_test=False)
+
+    summary = parse_summary(summary_soup)
+    govt_info = parse_government_hospitals(govt_soup)
+    private_info = parse_private_hospitals(private_soup)
+
+    logging.info("dumping data..")
     with open("summary.json", "w") as fp:
         json.dump(summary, fp, indent=2)
+    govt_df = pandas.DataFrame.from_dict(govt_info)
+    private_df = pandas.DataFrame.from_dict(private_info)
+    govt_df.to_csv("govt.csv")
+    private_df.to_csv("private.csv")
+    logging.info(".. done.")
 
 
 if __name__ == "__main__":
