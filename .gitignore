@@ -16,3 +16,7 @@ __pycache__/
 summary.json
 govt.csv
 private.csv
+
+# build and dist
+build/
+dist/
