@@ -1,4 +1,4 @@
-from hydbedscraper.type import t_BeautifulSoup, t_SummaryDict
+from hydbedscraper.types import t_BeautifulSoup, t_SummaryDict
 
 
 def parse_summary(summary_soup: t_BeautifulSoup) -> t_SummaryDict:

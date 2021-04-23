@@ -4,10 +4,16 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
 from hydbedscraper.testdata.path import test_summary_html, test_government_hospital_data_html
-from hydbedscraper.type import t_BeautifulSoup
-
+from hydbedscraper.types import t_BeautifulSoup, t_Response
 
 base_URL = "http://164.100.112.24/SpringMVC/"
+
+
+def _decode_streamed_response(response: t_Response) -> str:
+    response_content = ""
+    for chunk in response.iter_content(8192, decode_unicode=True):
+        response_content += chunk
+    return response_content
 
 
 def get_summary_page_soup(use_test: bool = True) -> t_BeautifulSoup:
@@ -19,10 +25,7 @@ def get_summary_page_soup(use_test: bool = True) -> t_BeautifulSoup:
             urljoin(base_URL, "Hospital_Beds_Statistic_Bulletin_citizen.htm"),
             stream=True,
         )
-        response_content = ""
-        for chunk in page.iter_content(8192, decode_unicode=True):
-            response_content += chunk
-        soup = BeautifulSoup(response_content, "lxml")
+        soup = BeautifulSoup(_decode_streamed_response(page), "lxml")
     return soup
 
 
@@ -38,8 +41,5 @@ def get_government_hospitals_page_soup(use_test: bool = True) -> t_BeautifulSoup
             },
             stream=True,
         )
-        response_content = ""
-        for chunk in page.iter_content(8192, decode_unicode=True):
-            response_content += chunk
-        soup = BeautifulSoup(response_content, "lxml")
+        soup = BeautifulSoup(_decode_streamed_response(page), "lxml")
     return soup
