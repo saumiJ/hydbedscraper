@@ -12,11 +12,6 @@ __pycache__/
 *.egg-info/
 
 
-# output
-summary.json
-govt.csv
-private.csv
-
 # build and dist
 build/
 dist/
