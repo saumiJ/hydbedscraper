@@ -10,8 +10,6 @@ from hydbedscraper.types import t_TableList
 
 base_URL = "https://ahna.org.in/"
 
-local_pdf_document_name = "amdavad_source.pdf"
-
 
 def get_hospital_tables() -> t_TableList:
     logging.info("getting hospital tables..")

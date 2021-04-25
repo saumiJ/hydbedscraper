@@ -1,17 +1,17 @@
 from enum import Enum
 
-from hydbedscraper.drivers import hyderabad, amdavad
+from hydbedscraper.drivers import hyderabad, ahmedabad
 
 
 class City(Enum):
-    AMDAVAD = "amdavad"
+    AHMEDABAD = "ahmedabad"
     HYDERABAD = "hyderabad"
 
     def work(self):
-        if self is City.HYDERABAD:
+        if self is City.AHMEDABAD:
+            return ahmedabad.work()
+        elif self is City.HYDERABAD:
             return hyderabad.work()
-        elif self is City.AMDAVAD:
-            return amdavad.work()
         else:
             raise NotImplementedError(self)
 
