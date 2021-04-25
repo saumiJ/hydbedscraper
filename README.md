@@ -1,6 +1,6 @@
 Gets hospital bed availability for given city. Currently supported cities:
 
-* Hyderabad
+* `hyderabad`
 
 Installation:
 
