@@ -17,5 +17,5 @@ def work(city_name: str) -> t_DataFrameDict:
     return city.work()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(work("hyderabad"))
