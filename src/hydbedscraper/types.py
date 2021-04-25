@@ -3,7 +3,7 @@ import camelot
 import pandas
 import requests
 
-from typing import Dict, List
+from typing import Dict
 
 # bs4
 t_BeautifulSoup = bs4.BeautifulSoup
@@ -19,5 +19,3 @@ t_DataFrameDict = Dict[str, pandas.DataFrame]
 # camelot
 t_TableList = camelot.core.TableList
 
-t_SummaryDict = Dict[str, Dict[str, Dict[str, int]]]
-t_FullDict = Dict[str, List]
