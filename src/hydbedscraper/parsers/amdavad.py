@@ -109,7 +109,9 @@ def _get_hospital_category_information_for_table(
 
 
 def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, list]]:
-    hospital_category_to_information_dict = defaultdict(lambda: defaultdict(list))
+    hospital_category_to_information_dict: Dict[str, Dict[str, list]] = defaultdict(
+        lambda: defaultdict(list)
+    )
     # read date and time
 
     # current hospital-category

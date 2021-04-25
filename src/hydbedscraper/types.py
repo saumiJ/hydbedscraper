@@ -19,4 +19,3 @@ t_DataFrameDict = Dict[str, pandas.DataFrame]
 # camelot
 t_Table = camelot.core.Table
 t_TableList = camelot.core.TableList
-
