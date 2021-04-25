@@ -1,9 +1,11 @@
 import logging
 
-from hydbedscraper.types import t_BeautifulSoup, t_SummaryDict, t_FullDict
+from typing import Dict, List
+
+from hydbedscraper.types import t_BeautifulSoup
 
 
-def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
+def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> Dict[str, List]:
     logging.info("parsing hospitals page..")
     col_id_of_district = 1
     key_colid_dtype = [
@@ -19,7 +21,7 @@ def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
         ("last_updated_time", 17, str),
     ]
 
-    govt_dict: t_FullDict = {"district": []}
+    govt_dict: Dict[str, List] = {"district": []}
     for k, _, _ in key_colid_dtype:
         govt_dict[k] = []
 
@@ -44,7 +46,7 @@ def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
     return govt_dict
 
 
-def parse_private_hospitals(private_soup: t_BeautifulSoup) -> t_FullDict:
+def parse_private_hospitals(private_soup: t_BeautifulSoup) -> Dict[str, List]:
     logging.info("parsing hospitals page..")
     private_dict = parse_government_hospitals(private_soup)
     logging.info("..done")

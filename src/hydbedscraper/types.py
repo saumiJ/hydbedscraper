@@ -1,15 +1,21 @@
-from bs4 import BeautifulSoup, Tag
-from pandas import DataFrame
-from requests.models import Response
-from typing import Dict, List
+import bs4
+import camelot
+import pandas
+import requests
 
-t_BeautifulSoup = BeautifulSoup
-t_Tag = Tag
+from typing import Dict
 
-t_Response = Response
+# bs4
+t_BeautifulSoup = bs4.BeautifulSoup
+t_Tag = bs4.Tag
 
-t_DataFrame = DataFrame
+# response
+t_Response = requests.models.Response
 
-t_SummaryDict = Dict[str, Dict[str, Dict[str, int]]]
-t_FullDict = Dict[str, List]
-t_DataFrameDict = Dict[str, DataFrame]
+# pandas
+t_DataFrame = pandas.DataFrame
+t_DataFrameDict = Dict[str, pandas.DataFrame]
+
+# camelot
+t_Table = camelot.core.Table
+t_TableList = camelot.core.TableList

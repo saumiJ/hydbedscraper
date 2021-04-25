@@ -15,7 +15,3 @@ def work(city_name: str) -> t_DataFrameDict:
     """
     city = get_city_from_str(city_name)
     return city.work()
-
-
-if __name__ == '__main__':
-    print(work("hyderabad"))
