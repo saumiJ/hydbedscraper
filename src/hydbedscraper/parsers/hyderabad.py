@@ -3,50 +3,8 @@ import logging
 from hydbedscraper.types import t_BeautifulSoup, t_SummaryDict, t_FullDict
 
 
-def parse_summary(summary_soup: t_BeautifulSoup) -> t_SummaryDict:
-    logging.info("parsing summary page..")
-    summary_dict: t_SummaryDict = dict()
-
-    # column-ids
-    col_id_of_hospital_type = 1
-    col_id_of_regular_beds = 2
-    col_id_of_oxygen_beds = 5
-    col_id_of_icu_beds = 8
-
-    # offsets
-    occupied_offset = 1
-    vacant_offset = 2
-
-    # get first instance of table
-    summary_table = summary_soup.find("table")
-
-    # populate info
-    body = summary_table.find("tbody")
-    body_rows = body("tr")
-    for bed_type, col_id_of_bed_type in [
-        ("regular_bed", col_id_of_regular_beds),
-        ("oxygen_bed", col_id_of_oxygen_beds),
-        ("icu_bed", col_id_of_icu_beds),
-    ]:
-        summary_dict[bed_type] = dict()
-        for status, status_offset in [
-            ("occupied", occupied_offset),
-            ("vacant", vacant_offset),
-        ]:
-            summary_dict[bed_type][status] = dict()
-            for row in body_rows:
-                row_cols = row("td")
-                hospital_type = row_cols[col_id_of_hospital_type].a.string
-                summary_dict[bed_type][status][hospital_type] = int(
-                    row_cols[col_id_of_bed_type + status_offset].string
-                )
-
-    logging.info("..done")
-    return summary_dict
-
-
 def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
-    logging.info("parsing government hospitals page..")
+    logging.info("parsing hospitals page..")
     col_id_of_district = 1
     key_colid_dtype = [
         ("hospital_name", 2, str),
@@ -87,7 +45,7 @@ def parse_government_hospitals(govt_soup: t_BeautifulSoup) -> t_FullDict:
 
 
 def parse_private_hospitals(private_soup: t_BeautifulSoup) -> t_FullDict:
-    logging.info("parsing private hospitals page..")
+    logging.info("parsing hospitals page..")
     private_dict = parse_government_hospitals(private_soup)
     logging.info("..done")
     return private_dict
