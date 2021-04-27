@@ -46,6 +46,7 @@ def get_hospital_tables() -> t_TableList:
     tables = camelot.read_pdf(
         urljoin(base_URL, pdf_url_suffix),
         pages="all",
+        line_scale=40,  # necessary to detect smaller tables
     )
 
     logging.info("..done")
