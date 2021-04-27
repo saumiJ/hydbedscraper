@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
-from hydbedscraper.requesters.common import decode_streamed_string_response
+from hydbedscraper.requesters._common import decode_streamed_string_response
 from hydbedscraper.testdata.path import (
     test_government_hospital_data_html,
     test_private_hospital_data_html,

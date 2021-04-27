@@ -5,7 +5,7 @@ import re
 from urllib.parse import urljoin
 
 import requests
-from hydbedscraper.requesters.common import decode_streamed_string_response
+from hydbedscraper.requesters._common import decode_streamed_string_response
 from hydbedscraper.types import t_TableList
 
 base_URL = "https://ahna.org.in/"
