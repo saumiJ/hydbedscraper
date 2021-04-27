@@ -6,10 +6,11 @@ from hydbedscraper.requesters.hyderabad import (
     get_government_hospitals_page_soup,
     get_private_hospitals_page_soup,
 )
+from hydbedscraper.types import t_DataFrameDict
 from hydbedscraper.writers.hyderabad import to_dataframe_dict
 
 
-def work():
+def work() -> t_DataFrameDict:
     govt_soup = get_government_hospitals_page_soup(use_test=False)
     private_soup = get_private_hospitals_page_soup(use_test=False)
 
