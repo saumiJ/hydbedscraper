@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 import pandas as pd
+import re
 
 from typing import Dict, Tuple, Optional
 
@@ -21,6 +22,21 @@ key_colid_dtype = [
     ("icu_ventilator_occupied", 9, int),
     ("icu_ventilator_vacant", 10, int),
 ]
+date_key = "date"
+time_key = "time"
+
+
+def _get_date_and_time(table_list: t_TableList) -> Tuple[str, str]:
+    # ASSMUPTION: Date and time are stored in first column of some row
+    for table in table_list:
+        date_time_regex = r".*Date: *(.*) *Time: *(.*)"
+        for cell in table.df[0]:
+            regex_result = re.search(date_time_regex, cell)
+            if regex_result:
+                date_str = regex_result.group(1)
+                time_str = regex_result.group(2)
+                return date_str, time_str
+    return "??/??/????", "??:?? ??"
 
 
 def _find_category_name(
@@ -113,6 +129,7 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, l
         lambda: defaultdict(list)
     )
     # read date and time
+    date_str, time_str = _get_date_and_time(hospital_tables)
 
     # current hospital-category
     current_hospital_category = None
