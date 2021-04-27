@@ -11,8 +11,8 @@ from hydbedscraper.writers.hyderabad import to_dataframe_dict
 
 
 def work() -> t_DataFrameDict:
-    govt_soup = get_government_hospitals_page_soup(use_test=False)
-    private_soup = get_private_hospitals_page_soup(use_test=False)
+    govt_soup = get_government_hospitals_page_soup()
+    private_soup = get_private_hospitals_page_soup()
 
     govt_info = parse_government_hospitals(govt_soup)
     private_info = parse_private_hospitals(private_soup)
