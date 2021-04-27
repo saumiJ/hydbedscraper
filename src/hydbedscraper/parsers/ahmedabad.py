@@ -163,12 +163,14 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, l
                     # add information
                     raw = table.df.iloc[row_index, col_id]
                     cleaned = dtype_to_cleaner_map[dtype](raw)
-                    hospital_category_to_information_dict[category][key].append(
-                        cleaned
-                    )
+                    hospital_category_to_information_dict[category][key].append(cleaned)
                 # add date and time information
-                hospital_category_to_information_dict[category][date_key].append(date_str)
-                hospital_category_to_information_dict[category][time_key].append(time_str)
+                hospital_category_to_information_dict[category][date_key].append(
+                    date_str
+                )
+                hospital_category_to_information_dict[category][time_key].append(
+                    time_str
+                )
             # store current hospital category
             current_hospital_category = category
 
@@ -183,11 +185,15 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, l
                             # add information
                             raw = table.df.iloc[row_index, col_id + dchc_index_offset]
                             cleaned = dtype_to_cleaner_map[dtype](raw)
-                            hospital_category_to_information_dict[dchc_category_tag][key].append(
-                                cleaned
-                            )
+                            hospital_category_to_information_dict[dchc_category_tag][
+                                key
+                            ].append(cleaned)
                         # add date and time information
-                        hospital_category_to_information_dict[dchc_category_tag][date_key].append(date_str)
-                        hospital_category_to_information_dict[dchc_category_tag][time_key].append(time_str)
+                        hospital_category_to_information_dict[dchc_category_tag][
+                            date_key
+                        ].append(date_str)
+                        hospital_category_to_information_dict[dchc_category_tag][
+                            time_key
+                        ].append(time_str)
 
     return hospital_category_to_information_dict

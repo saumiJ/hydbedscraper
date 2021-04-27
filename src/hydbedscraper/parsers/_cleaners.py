@@ -17,7 +17,4 @@ def clean_str(raw: str) -> str:
     return raw
 
 
-dtype_to_cleaner_map: Dict[type, Callable] = {
-    int: clean_int,
-    str: clean_str
-}
+dtype_to_cleaner_map: Dict[type, Callable] = {int: clean_int, str: clean_str}
