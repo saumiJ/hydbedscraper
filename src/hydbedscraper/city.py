@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 
 from hydbedscraper.drivers import hyderabad, ahmedabad
@@ -8,6 +9,7 @@ class City(Enum):
     HYDERABAD = "hyderabad"
 
     def work(self):
+        logging.info(f"working at {self.value}")
         if self is City.AHMEDABAD:
             return ahmedabad.work()
         elif self is City.HYDERABAD:
