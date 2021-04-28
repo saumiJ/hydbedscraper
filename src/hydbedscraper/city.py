@@ -25,4 +25,4 @@ def get_city_from_str(city_name: str) -> City:
     try:
         return City(city_name)
     except ValueError as exc:
-        raise ValueError(f"Supported cities: {[city for city in City]}") from exc
+        raise ValueError(f"Supported cities: {[city.value for city in City]}") from exc
