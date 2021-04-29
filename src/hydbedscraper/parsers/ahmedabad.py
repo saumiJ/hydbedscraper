@@ -32,6 +32,7 @@ time_key = "time"
 def _get_date_and_time(table_list: t_TableList) -> Tuple[str, str]:
     # ASSMUPTION: Date and time are stored in first column of some row
     for table in table_list:
+        # regex explanation: https://regex101.com/r/6JA6MH/1
         date_time_regex = r".*Date: *(.*) *Time: *(.*)"
         for cell in table.df[0]:
             regex_result = re.search(date_time_regex, cell)
