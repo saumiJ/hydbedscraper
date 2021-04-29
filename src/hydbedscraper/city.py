@@ -1,23 +1,26 @@
 import logging
 from enum import Enum
 
-from hydbedscraper.drivers import hyderabad, ahmedabad, vadodara
+from hydbedscraper.drivers import hyderabad, ahmedabad, vadodara, pune
 
 
 class City(Enum):
     AHMEDABAD = "ahmedabad"
     HYDERABAD = "hyderabad"
+    PUNE = "pune"
     VADODARA = "vadodara"
 
     def work(self):
         logging.info(f"working at {self.value}")
-        if self is City.AHMEDABAD:
-            return ahmedabad.work()
-        elif self is City.HYDERABAD:
-            return hyderabad.work()
-        elif self is City.VADODARA:
-            return vadodara.work()
-        else:
+        work_method_dict = {
+            City.AHMEDABAD: ahmedabad.work,
+            City.HYDERABAD: hyderabad.work,
+            City.PUNE: pune.work,
+            City.VADODARA: vadodara.work,
+        }
+        try:
+            work_method_dict[self]()
+        except KeyError:
             raise NotImplementedError(self)
 
 
