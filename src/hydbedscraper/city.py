@@ -19,7 +19,7 @@ class City(Enum):
             City.VADODARA: vadodara.work,
         }
         try:
-            work_method_dict[self]()
+            return work_method_dict[self]()
         except KeyError:
             raise NotImplementedError(self)
 
