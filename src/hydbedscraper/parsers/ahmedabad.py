@@ -4,7 +4,8 @@ import re
 from collections import defaultdict
 from typing import Dict, Tuple, Optional
 
-from hydbedscraper.parsers._cleaners import dtype_to_cleaner_map
+from hydbedscraper.parsers.helpers.cleaners import dtype_to_cleaner_map
+from hydbedscraper.parsers.helpers.labels import Label
 from hydbedscraper.types import t_TableList, t_Table
 
 col_id_of_serial_number = 0
@@ -14,19 +15,17 @@ dchc_category_tag = "DCHC"
 dchc_first_cell_label = "TOTAL DCHC"
 dchc_index_offset = -2
 
-key_colid_dtype = [
-    ("hospital_name", 2, str),
-    ("isolation_occupied", 3, int),
-    ("isolation_vacant", 4, int),
-    ("hdu_occupied", 5, int),
-    ("hdu_vacant", 6, int),
-    ("icu_no_ventilator_occupied", 7, int),
-    ("icu_no_ventilator_vacant", 8, int),
-    ("icu_ventilator_occupied", 9, int),
-    ("icu_ventilator_vacant", 10, int),
+label_colid_dtype = [
+    (Label.HOSPITAL_NAME, 2, str),
+    (Label.ISOLATION_NON_OXYGEN_OCCUPIED_BEDS, 3, int),
+    (Label.ISOLATION_NON_OXYGEN_VACANT_BEDS, 4, int),
+    (Label.HIGH_DEPENDENCY_UNIT_OCCUPIED_BEDS, 5, int),
+    (Label.HIGH_DEPENDENCY_UNIT_VACANT_BEDS, 6, int),
+    (Label.ICU_NON_VENTILATOR_OCCUPIED_BEDS, 7, int),
+    (Label.ICU_NON_VENTILATOR_VACANT_BEDS, 8, int),
+    (Label.ICU_VENTILATOR_OCCUPIED_BEDS, 9, int),
+    (Label.ICU_VENTILATOR_VACANT_BEDS, 10, int),
 ]
-date_key = "date"
-time_key = "time"
 
 
 def _get_date_and_time(table_list: t_TableList) -> Tuple[str, str]:
@@ -134,10 +133,8 @@ def _get_hospital_category_information_for_table(
     return category_to_start_end_index_tuple_map
 
 
-def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, list]]:
-    hospital_category_to_information_dict: Dict[str, Dict[str, list]] = defaultdict(
-        lambda: defaultdict(list)
-    )
+def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[Label, list]:
+    info_dict: Dict[Label, list] = defaultdict(list)
     # read date and time
     date_str, time_str = _get_date_and_time(hospital_tables)
 
@@ -160,18 +157,20 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, l
             # go over each row for that category
             for row_index in range(start_index, end_index + 1):
                 # go over each information-cell
-                for key, col_id, dtype in key_colid_dtype:
+                for label, col_id, dtype in label_colid_dtype:
                     # add information
                     raw = table.df.iloc[row_index, col_id]
                     cleaned = dtype_to_cleaner_map[dtype](raw)
-                    hospital_category_to_information_dict[category][key].append(cleaned)
+                    info_dict[label].append(
+                        cleaned
+                    )
                 # add date and time information
-                hospital_category_to_information_dict[category][date_key].append(
-                    date_str
-                )
-                hospital_category_to_information_dict[category][time_key].append(
-                    time_str
-                )
+                info_dict[
+                    Label.LAST_UPDATED_DATE
+                ].append(date_str)
+                info_dict[
+                    Label.LAST_UPDATED_TIME
+                ].append(time_str)
             # store current hospital category
             current_hospital_category = category
 
@@ -182,19 +181,13 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[str, Dict[str, l
                 first_cell = table.df[0][row_index]
                 if isinstance(first_cell, str):
                     if dchc_first_cell_label in first_cell:
-                        for key, col_id, dtype in key_colid_dtype:
+                        for label, col_id, dtype in label_colid_dtype:
                             # add information
                             raw = table.df.iloc[row_index, col_id + dchc_index_offset]
                             cleaned = dtype_to_cleaner_map[dtype](raw)
-                            hospital_category_to_information_dict[dchc_category_tag][
-                                key
-                            ].append(cleaned)
+                            info_dict[label].append(cleaned)
                         # add date and time information
-                        hospital_category_to_information_dict[dchc_category_tag][
-                            date_key
-                        ].append(date_str)
-                        hospital_category_to_information_dict[dchc_category_tag][
-                            time_key
-                        ].append(time_str)
+                        info_dict[Label.LAST_UPDATED_DATE].append(date_str)
+                        info_dict[Label.LAST_UPDATED_TIME].append(time_str)
 
-    return hospital_category_to_information_dict
+    return info_dict

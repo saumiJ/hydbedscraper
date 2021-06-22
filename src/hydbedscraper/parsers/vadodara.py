@@ -1,6 +1,7 @@
 from collections import defaultdict
 from typing import Dict, List, Tuple
 
+from hydbedscraper.parsers.helpers.labels import str_to_label, Label
 from hydbedscraper.types import t_BeautifulSoup
 
 
@@ -33,6 +34,27 @@ def parse_bed_soup(bed_soup: t_BeautifulSoup) -> Dict:
         if len(cells) != num_columns:
             continue
         for key, col_id, _type in key_colid_type:
-            info_dict[key].append(_type(cells[col_id].string))
+            label = str_to_label(key)
+            info_dict[label].append(_type(cells[col_id].string))
 
     return info_dict
+
+
+label_colid_dtype = [
+    (Label.HOSPITAL_NAME, 0, str),
+    (Label.HOSPITAL_ADDRESS, 1, str),
+    (Label.ISOLATION_NON_OXYGEN_OCCUPIED_BEDS, 3, int),
+    (Label.ISOLATION_NON_OXYGEN_VACANT_BEDS, 4, int),
+    (Label.HIGH_DEPENDENCY_UNIT_OCCUPIED_BEDS, 5, int),
+    (Label.HIGH_DEPENDENCY_UNIT_VACANT_BEDS, 6, int),
+    (Label.ICU_NON_VENTILATOR_OCCUPIED_BEDS, 7, int),
+    (Label.ICU_NON_VENTILATOR_VACANT_BEDS, 8, int),
+    (Label.ICU_VENTILATOR_OCCUPIED_BEDS, 9, int),
+    (Label.ICU_VENTILATOR_VACANT_BEDS, 10, int),
+]
+
+
+def parse_soups(bed_soups: List[t_BeautifulSoup]) -> Dict[Label, list]:
+    info_dict = defaultdict(list)
+
+    pass

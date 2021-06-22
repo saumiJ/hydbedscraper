@@ -1,14 +1,10 @@
-from hydbedscraper.parsers.pune import parse_bed_soups
-from hydbedscraper.requesters.pune import get_bed_soups
-from hydbedscraper.types import t_DataFrameDict
-from hydbedscraper.writers.pune import to_dataframe_dict
+from hydbedscraper.parsers.pune import parse_soups
+from hydbedscraper.requesters.pune import get_soups
+from hydbedscraper.types import t_DataFrame
+from hydbedscraper.writer import to_dataframe
 
 
-def work() -> t_DataFrameDict:
-    bed_soups = get_bed_soups()
-    bed_info = parse_bed_soups(bed_soups)
-    return to_dataframe_dict(bed_info)
-
-
-if __name__ == "__main__":
-    print(work())
+def work() -> t_DataFrame:
+    soups = get_soups()
+    info_dict = parse_soups(soups)
+    return to_dataframe(info_dict)

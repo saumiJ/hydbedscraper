@@ -1,20 +1,14 @@
 from hydbedscraper.parsers.hyderabad import (
-    parse_government_hospitals,
-    parse_private_hospitals,
+    parse_soups,
 )
 from hydbedscraper.requesters.hyderabad import (
-    get_government_hospitals_page_soup,
-    get_private_hospitals_page_soup,
+    get_soups,
 )
-from hydbedscraper.types import t_DataFrameDict
-from hydbedscraper.writers.hyderabad import to_dataframe_dict
+from hydbedscraper.types import t_DataFrame
+from hydbedscraper.writer import to_dataframe
 
 
-def work() -> t_DataFrameDict:
-    govt_soup = get_government_hospitals_page_soup()
-    private_soup = get_private_hospitals_page_soup()
-
-    govt_info = parse_government_hospitals(govt_soup)
-    private_info = parse_private_hospitals(private_soup)
-
-    return to_dataframe_dict(govt_info, private_info)
+def work() -> t_DataFrame:
+    soups = get_soups()
+    info_dict = parse_soups(soups)
+    return to_dataframe(info_dict)

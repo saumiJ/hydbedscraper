@@ -20,7 +20,7 @@ def _get_url_list_of_all_information_pages(source_soup: t_BeautifulSoup) -> List
     return list(url_set)
 
 
-def get_bed_soups() -> List[t_BeautifulSoup]:
+def get_soups() -> List[t_BeautifulSoup]:
     source_soup = soupify_page(url=urljoin(base_URL, "hsr"))
     url_list = _get_url_list_of_all_information_pages(source_soup)
     return [soupify_page(url=url) for url in url_list]
