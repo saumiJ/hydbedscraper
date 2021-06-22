@@ -16,12 +16,7 @@ pip3 install hydbedscraper
 ```python
 from hydbedscraper.main import work
 
-type_to_dataframe = work("name_of_city")
-for _type, dataframe in type_to_dataframe.items():
-    ...
+dataframe = work("name_of_city")
 ```
 
-In your python project, import the `work` method and call it with the name of the city. It returns a dictionary.
-
-* Keys of the dictionary: Type containing some information about what dataframe it corresponds to.
-* Values of the dictionary: A `DataFrame` object from the `pandas` package containing information about hospitals. Contents of `DataFrame` vary from source-to-source, column information stored in first row.
+In your python project, import the `work` method and call it with the name of the city. It returns a pandas `DataFrame` object with tabulated data.
