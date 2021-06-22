@@ -85,15 +85,21 @@ def parse_soups(soups: List[t_BeautifulSoup]) -> Dict[Label, List[Union[str, int
             isolation_total_beds = int(_pfsfc(cells[9]))
             isolation_vacant_beds = int(_pfsfc(cells[10]))
             isolation_occupied_beds = _to2v(isolation_total_beds, isolation_vacant_beds)
-            info_dict[Label.ISOLATION_NON_OXYGEN_OCCUPIED_BEDS].append(isolation_occupied_beds)
-            info_dict[Label.ISOLATION_NON_OXYGEN_VACANT_BEDS].append(isolation_vacant_beds)
+            info_dict[Label.ISOLATION_NON_OXYGEN_OCCUPIED_BEDS].append(
+                isolation_occupied_beds
+            )
+            info_dict[Label.ISOLATION_NON_OXYGEN_VACANT_BEDS].append(
+                isolation_vacant_beds
+            )
 
             ventilator_total_beds = int(_pfsfc(cells[11]))
             ventilator_vacant_beds = int(_pfsfc(cells[12]))
             ventilator_occupied_beds = _to2v(
                 ventilator_total_beds, ventilator_vacant_beds
             )
-            info_dict[Label.ISOLATION_OXYGEN_OCCUPIED_BEDS].append(ventilator_occupied_beds)
+            info_dict[Label.ISOLATION_OXYGEN_OCCUPIED_BEDS].append(
+                ventilator_occupied_beds
+            )
             info_dict[Label.ISOLATION_OXYGEN_VACANT_BEDS].append(ventilator_vacant_beds)
 
             icu_non_ventilator_total_beds = int(_pfsfc(cells[13]))

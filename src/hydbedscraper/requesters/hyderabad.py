@@ -15,7 +15,7 @@ def get_soups() -> List[Tuple[Dict[Label, str], t_BeautifulSoup]]:
 
     for param, charges_type in [
         (government_hospital_param, "Free"),
-        (private_hospital_param, "Chargeable")
+        (private_hospital_param, "Chargeable"),
     ]:
         label_to_value_dict = {Label.CHARGES_TYPE: charges_type}
         soup = soupify_page(

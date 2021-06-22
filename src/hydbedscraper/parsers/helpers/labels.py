@@ -39,7 +39,7 @@ class Label(Enum):
 str_to_label_map: Dict[str, Label] = {
     "hospital name": Label.HOSPITAL_NAME,
     "hospital address": Label.HOSPITAL_ADDRESS,
-}.update({})
+}
 
 
 def str_to_label(_str: str) -> Label:

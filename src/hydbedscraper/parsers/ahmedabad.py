@@ -161,16 +161,10 @@ def parse_hospital_tables(hospital_tables: t_TableList) -> Dict[Label, list]:
                     # add information
                     raw = table.df.iloc[row_index, col_id]
                     cleaned = dtype_to_cleaner_map[dtype](raw)
-                    info_dict[label].append(
-                        cleaned
-                    )
+                    info_dict[label].append(cleaned)
                 # add date and time information
-                info_dict[
-                    Label.LAST_UPDATED_DATE
-                ].append(date_str)
-                info_dict[
-                    Label.LAST_UPDATED_TIME
-                ].append(time_str)
+                info_dict[Label.LAST_UPDATED_DATE].append(date_str)
+                info_dict[Label.LAST_UPDATED_TIME].append(time_str)
             # store current hospital category
             current_hospital_category = category
 

@@ -7,7 +7,9 @@ from hydbedscraper.types import t_BeautifulSoup
 from hydbedscraper.parsers.helpers.labels import Label
 
 
-def parse_soups(soups: List[Tuple[Dict[Label, str], t_BeautifulSoup]]) -> Dict[Label, list]:
+def parse_soups(
+    soups: List[Tuple[Dict[Label, str], t_BeautifulSoup]]
+) -> Dict[Label, list]:
     info_dict: Dict[Label, list] = defaultdict(list)
     for param_dict, soup in soups:
         col_id_of_district = 1
